@@ -26,6 +26,11 @@ const DOCX_EDITS = [
 	{ from: 'bound = Function("binder", "return function (" + joiny(boundArgs, ",") + "){ return binder.apply(this,arguments); }")(binder);', to: 'throw new TypeError("Function.prototype.bind is missing");', count: 1 },
 	{ from: 'return Function("return function*() {}")();', to: 'return void 0;', count: 1 },
 	{ from: 'return $Function("\\"use strict\\"; return (" + expressionSyntax + ").constructor;")();', to: 'return void expressionSyntax;', count: 1 },
+	// Two setImmediate polyfills (immediate in lie, and the copy in jszip) keep an old-IE path that creates a script
+	// element. The directory review flags createElement('script'). Electron never takes that path; the edits remove it
+	// and keep the setTimeout fallback.
+	{ from: /"document" in t && "onreadystatechange" in t\.document\.createElement\("script"\) \? function\(\) \{\s*var e = t\.document\.createElement\("script"\);\s*e\.onreadystatechange = function\(\) \{\s*u\(\), e\.onreadystatechange = null, e\.parentNode\.removeChild\(e\), e = null;\s*\}, t\.document\.documentElement\.appendChild\(e\);\s*\} : /g, to: '', count: 1 },
+	{ from: /l && "onreadystatechange" in l\.createElement\("script"\) \? \(s = l\.documentElement, function\(e\) \{\s*var t = l\.createElement\("script"\);\s*t\.onreadystatechange = function\(\) \{\s*c\(e\), t\.onreadystatechange = null, s\.removeChild\(t\), t = null;\s*\}, s\.appendChild\(t\);\s*\}\) : /g, to: '', count: 1 },
 ];
 
 const patchDocx = {
@@ -39,6 +44,7 @@ const patchDocx = {
 				code = typeof edit.from === 'string' ? code.split(edit.from).join(edit.to) : code.replace(edit.from, edit.to);
 			}
 			if (/(?<![\w$.])\$?Function\(|\.window\[/.test(code)) throw new Error('patch-docx: a Function constructor call or a .window[ lookup is left in the library');
+			if (code.includes('createElement("script")')) throw new Error('patch-docx: a script element is left in the library');
 			return { contents: code, loader: 'js' };
 		});
 	},
