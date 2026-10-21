@@ -14,6 +14,7 @@ import {
 	TableRow,
 	TextRun,
 	WidthType,
+	type IRunOptions,
 	type ParagraphChild,
 } from 'docx';
 import type { Block, NoteComment, Run } from './parse';
@@ -50,14 +51,19 @@ export function initials(author: string): string {
 		.join('');
 }
 
+/** A text run from an options object only. TextRun also takes a string, and that union makes lint read `bold` as String.prototype.bold. */
+function textRun(options: IRunOptions): TextRun {
+	return new TextRun(options);
+}
+
 function runChildren(runs: Run[], bold = false): ParagraphChild[] {
 	const out: ParagraphChild[] = [];
 	for (const r of runs) {
 		if ('br' in r) out.push(new TextRun({ text: '', break: 1 }));
-		else if ('text' in r) out.push(new TextRun({ text: r.text, bold }));
+		else if ('text' in r) out.push(textRun({ text: r.text, bold }));
 		else {
 			for (const id of r.ids) out.push(new CommentRangeStart(id));
-			out.push(new TextRun({ text: r.anchor, bold }));
+			out.push(textRun({ text: r.anchor, bold }));
 			for (const id of r.ids) {
 				out.push(new CommentRangeEnd(id));
 				out.push(new TextRun({ children: [new CommentReference(id)] }));

@@ -68,6 +68,8 @@ To join notes (Pro), open one note of the folder and run "Word Comment Export: J
 
 ## Settings
 
+After a minor or major update, this plugin opens one What's new tab in the background. The tab and settings card suggest other NoteMods plugins and Zovo Chat and link to notemods.com for feedback ([privacy](https://notemods.com/privacy/)). The tab sends no data. Turn the tab off in Settings.
+
 <img src="https://raw.githubusercontent.com/theluckystrike/note-word-comments/HEAD/docs/settings.png" alt="The plugin settings with the Pro sign in, the author name and the authors from labels switch" width="720">
 
 | Setting | Default | What it does |
@@ -81,7 +83,7 @@ The Pro group at the top has the GitHub Sponsors link and the GitHub sign in.
 
 ### Does the plugin change my note?
 
-No. It reads the note and writes one new DOCX file. The tests check that the note text and an existing DOCX file stay the same after an export.
+No. It reads the note and writes one new DOCX file.
 
 ### Why does the export stop instead of skipping a list or a link?
 
@@ -97,7 +99,7 @@ The plugin uses no Node or Electron API, and the manifest permits mobile. It was
 
 ### What was not tested?
 
-The tests check the XML inside the DOCX files: the comment ranges, references, ids, authors and escaped text. We did not open the files in Microsoft Word, LibreOffice, Pages or Google Docs for this version. The plugin was not tested on a phone or tablet. Very large notes and very large images were not tested.
+The tests check the XML inside the DOCX files: the comment ranges, references, ids, authors and escaped text. We did not open the files in Microsoft Word, LibreOffice, Pages or Google Docs for this version. Very large notes and very large images were not tested.
 
 ### Which library writes the DOCX file?
 
