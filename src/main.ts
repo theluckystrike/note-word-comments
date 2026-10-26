@@ -1,9 +1,9 @@
-import { MarkdownView, Notice, Plugin, TFile, type Editor, type MarkdownFileInfo } from 'obsidian';
+import { MarkdownView, Plugin, TFile, type Editor, type MarkdownFileInfo } from 'obsidian';
 import type { SponsorsManager } from './license/index';
 import { createGitHubSponsors } from './license/github-obsidian';
 import type { NoteSource, PlanOptions } from './export';
 import { PickNotesModal, PreviewModal } from './modals';
-import { SPONSORS, bindPro, isPro, resetPro } from './pro';
+import { SPONSORS, bindPro, isPro, resetPro, proNotice } from './pro';
 import { DEFAULT_SETTINGS, NoteWordCommentsSettingTab, normalizeSettings, type NoteWordCommentsSettings } from './settings';
 import { setupHello } from './hello/index';
 import WHATS_NEW from './whats-new.json';
@@ -12,7 +12,7 @@ import WHATS_NEW from './whats-new.json';
 const PRO_TICK_MS = 6 * 60 * 60 * 1000;
 
 export function needsPro(feature: string): void {
-	new Notice(`${feature} is a pro feature. Sponsor on GitHub, then sign in from the plugin settings.`);
+	proNotice(`${feature} is a pro feature.`);
 }
 
 export default class NoteWordCommentsPlugin extends Plugin {
