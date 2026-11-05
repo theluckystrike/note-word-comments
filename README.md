@@ -77,7 +77,7 @@ After a minor or major update, this plugin opens one What's new tab in the backg
 | Author | Writer | The name on each Word comment. The preview can change it too. |
 | Authors from labels (Pro) | On | A comment that starts with `Name:` gets that name as its author. |
 
-The Pro group at the top has the GitHub Sponsors link and the GitHub sign in.
+The Pro group at the top has the Sponsors link and GitHub sign in.
 
 ## FAQ
 
@@ -108,6 +108,8 @@ The `docx` library (MIT licence), bundled into `main.js` with its licence commen
 ## Payment, account and network
 
 The core features are free. Pro features need a GitHub Sponsors sponsorship of theluckystrike: $5 a month or more, or $15 once. A total payment of $15 meets the payment requirement for Pro without further payment. Sign-in and the checks below still apply. Your notes stay readable and editable with or without Pro.
+
+[One payment turns on Pro in every NoteMods plugin](https://notemods.com/pro/).
 
 GitHub handles the payment. Sponsor at https://github.com/sponsors/theluckystrike?frequency=one-time&metadata_source=note-word-comments. You need no account for the free features. Pro needs the GitHub account that sponsors.
 
