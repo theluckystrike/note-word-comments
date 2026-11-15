@@ -1,3 +1,4 @@
+import { testAlts } from './no-lookbehind';
 // Markdown note to a small document model. No Obsidian import: tests and the golden vectors run this directly.
 // Supported (free): plain paragraphs, ATX headings, inline %% comments %% on the previous word.
 // Supported (Pro, with pro: true): pipe tables and local image embeds. Each other structure is a problem.
@@ -68,12 +69,12 @@ export function inlineProblems(line: string, pro: boolean): string[] {
 		if (!out.includes(msg)) out.push(msg);
 	};
 	if (/!\[\[[^\]]*\]\]|!\[[^\]]*\]\([^)]*\)/.test(line)) add(pro ? 'image inside text (put the image on its own line)' : 'image (Pro)');
-	if (/(?<!!)\[\[[^\]]*\]\]/.test(line)) add('internal link');
-	if (/(?<!!)\[[^\]]*\]\([^)]*\)/.test(line)) add('Markdown link');
+	if (testAlts(line, [{ re: /\[\[[^\]]*\]\]/, notAfter: /!/ }])) add('internal link');
+	if (testAlts(line, [{ re: /\[[^\]]*\]\([^)]*\)/, notAfter: /!/ }])) add('Markdown link');
 	if (/\[\^[^\]]+\]/.test(line)) add('footnote');
 	if (/`/.test(line)) add('inline code');
 	if (/\*\*\S|\S\*\*|__\S[\s\S]*?\S__/.test(line)) add('bold text');
-	if (/(^|[^*\w])\*(?!\s)[^*]+?(?<!\s)\*(?!\w)|(^|[^\p{L}\p{N}_])_(?!\s)[^_]+?(?<!\s)_(?![\p{L}\p{N}_])/u.test(line)) add('italic text');
+	if (/(^|[^*\w])\*(?!\s)[^*]*?[^*\s]\*(?!\w)|(^|[^\p{L}\p{N}_])_(?!\s)[^_]*?[^_\s]_(?![\p{L}\p{N}_])/u.test(line)) add('italic text');
 	if (/~~\S/.test(line)) add('strikethrough');
 	if (/==\S[\s\S]*?\S==/.test(line)) add('highlight');
 	if (/\$\$|\$\S[^$]*?\S\$|\$\S\$/.test(line)) add('math');

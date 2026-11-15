@@ -5,6 +5,7 @@ import { runInNewContext } from 'node:vm';
 import { strFromU8, unzipSync } from 'fflate';
 import { resolve } from 'node:path';
 import { Blob as NodeBlob } from 'node:buffer';
+import { budget } from './time-scale';
 
 describe('browser build of the DOCX writer', () => {
 	it('Packer.toBlob and Blob.arrayBuffer succeed without Node globals', async () => {
@@ -23,5 +24,5 @@ describe('browser build of the DOCX writer', () => {
 		const defs = [...comments.matchAll(/<w:comment w:id="(\d+)"/g)].map((m) => m[1]);
 		expect(ref).toEqual(['0', '1']);
 		expect(defs).toEqual(ref);
-	}, 60000);
+	}, budget(60000));
 });
